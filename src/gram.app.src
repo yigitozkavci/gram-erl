@@ -6,7 +6,8 @@
   {applications,
    [kernel,
     stdlib,
-    jiffy
+    jiffy,
+    pe4kin
    ]},
   {env,[]},
   {modules, []},

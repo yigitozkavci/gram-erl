@@ -1,4 +1,30 @@
-[{<<"jiffy">>,
+{"1.1.0",
+[{<<"certifi">>,{pkg,<<"certifi">>,<<"0.4.0">>},2},
+ {<<"cowboy">>,{pkg,<<"cowboy">>,<<"1.0.4">>},1},
+ {<<"cowlib">>,{pkg,<<"cowlib">>,<<"1.0.2">>},2},
+ {<<"hackney">>,{pkg,<<"hackney">>,<<"1.6.0">>},1},
+ {<<"idna">>,{pkg,<<"idna">>,<<"1.2.0">>},2},
+ {<<"jiffy">>,
   {git,"https://github.com/davisp/jiffy.git",
        {ref,"ba09da790477b0f7a31aeaa9b21cae0ffba27d77"}},
-  0}].
+  0},
+ {<<"metrics">>,{pkg,<<"metrics">>,<<"1.0.1">>},2},
+ {<<"mimerl">>,{pkg,<<"mimerl">>,<<"1.0.2">>},2},
+ {<<"pe4kin">>,
+  {git,"https://github.com/seriyps/pe4kin.git",
+       {ref,"6223e1177d41fcba2c410fefe40a03fd3837ea3c"}},
+  0},
+ {<<"ranch">>,{pkg,<<"ranch">>,<<"1.7.1">>},2},
+ {<<"ssl_verify_fun">>,{pkg,<<"ssl_verify_fun">>,<<"1.1.0">>},2}]}.
+[
+{pkg_hash,[
+ {<<"certifi">>, <<"A7966EFB868B179023618D29A407548F70C52466BF1849B9E8EBD0E34B7EA11F">>},
+ {<<"cowboy">>, <<"A324A8DF9F2316C833A470D918AAF73AE894278B8AA6226CE7A9BF699388F878">>},
+ {<<"cowlib">>, <<"9D769A1D062C9C3AC753096F868CA121E2730B9A377DE23DEC0F7E08B1DF84EE">>},
+ {<<"hackney">>, <<"8D1E9440C9EDF23BF5E5E2FE0C71DE03EB265103B72901337394C840EEC679AC">>},
+ {<<"idna">>, <<"AC62EE99DA068F43C50DC69ACF700E03A62A348360126260E87F2B54ECED86B2">>},
+ {<<"metrics">>, <<"25F094DEA2CDA98213CECC3AEFF09E940299D950904393B2A29D191C346A8486">>},
+ {<<"mimerl">>, <<"993F9B0E084083405ED8252B99460C4F0563E41729AB42D9074FD5E52439BE88">>},
+ {<<"ranch">>, <<"6B1FAB51B49196860B733A49C07604465A47BDB78AA10C1C16A3D199F7F8C881">>},
+ {<<"ssl_verify_fun">>, <<"EDEE20847C42E379BF91261DB474FFBE373F8ACB56E9079ACB6038D4E0BF414F">>}]}
+].

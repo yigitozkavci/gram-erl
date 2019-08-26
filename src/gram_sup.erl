@@ -15,5 +15,15 @@ init(_Args) ->
                     shutdown => brutal_kill,
                     type => worker,
                     modules => [spam_detector]},
-    {ok, {SupFlags, [SpamDetector]}}.
+
+    Bot = <<"GramBot">>,
+    Token = list_to_binary(utils:read_token()),
+    pe4kin:launch_bot(Bot, Token, #{receiver => false}),
+    Pe4kin =       #{id => pe4kin_receiver,
+                    start => {pe4kin_receiver, start_link, [Bot, Token, #{receiver => true}]},
+                    restart => permanent,
+                    shutdown => brutal_kill,
+                    type => worker,
+                    modules => [pe4kin_receiver]},
+    {ok, {SupFlags, [Pe4kin, SpamDetector]}}.
 
