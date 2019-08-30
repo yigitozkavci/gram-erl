@@ -63,7 +63,56 @@ handle_info(detect_spam, State) ->
   io:format("Found some spams? ~p~n...", [Spams]),
   timer:send_after(3 * 60 * 1000, self(), detect_spam),
 
-  {noreply, State#state{updates=Updates}}.
+  {noreply, State#state{updates=Updates}};
+
+handle_info(wow, State) ->
+  Wow = tdlib:send_sync(session1, [{<<"@type">>, <<"getChatHistory">>}, {<<"chat_id">>, -1001330413002}, {<<"from_message_id">>, 1074790400}, {<<"limit">>, 100}], 30000),
+  % lists:foreach(fun(M) -> io:format("~p~n", [M]) end, proplists:get_value(<<"messages">>, Wow)),
+  lists:foreach(fun(M) -> io:format("~p~n", [M]) end, lists:map(fun get_message_texts/1, proplists:get_value(<<"messages">>, Wow))),
+  Resp = tdlib:send_sync(session1, [{<<"@type">>, <<"getChats">>}, {<<"offset_order">>, <<"9223372036854775807">>}, {<<"limit">>, 100}], 30000),
+  ChatIds = proplists:get_value(<<"chat_ids">>, Resp),
+  Infos = lists:map(fun get_chat_info/1, ChatIds),
+  io:format("~p~n", [Infos]),
+  {noreply, State}.
+
+get_chat_info(ChatId) ->
+  Resp = tdlib:send_sync(session1, [{<<"@type">>, <<"getChat">>}, {<<"chat_id">>, ChatId}], 30000),
+  Type = proplists:get_value(<<"type">>, Resp),
+  case proplists:get_value(<<"@type">>, Type) of
+    <<"chatTypePrivate">> ->
+      {proplists:get_value(<<"user_id">>, Type), proplists:get_value(<<"title">>, Resp)};
+    _ ->
+      undefined
+  end.
+
+get_message_texts(Message) ->
+  case proplists:get_value(<<"@type">>, Message) of
+    <<"message">> ->
+      Content = proplists:get_value(<<"content">>, Message),
+      case proplists:get_value(<<"@type">>, Content) of
+        <<"messageText">> ->
+          Text = proplists:get_value(<<"text">>, Content),
+          case proplists:get_value(<<"@type">>, Text) of
+            <<"formattedText">> ->
+              MessageText = proplists:get_value(<<"text">>, Text),
+              Cond = string:rstr(binary_to_list(MessageText), "open.spotify.com"),
+              if
+                Cond == 0 ->
+                  MessageText;
+                true ->
+                  Content
+              end;
+            _ ->
+              <<"no_formatted_text">>
+          end;
+      _ ->
+        <<"no_message_text">>
+      end;
+    _ ->
+      <<"no_message">>
+  end.
+
+        
 
 notify_spam_owner(#spam{user=User, messages=Messages}) ->
   Text=iolist_to_binary(io_lib:format("User ~s has spammed with ~p messages in 3 minutes!", [list_to_binary(User), length(Messages)])),

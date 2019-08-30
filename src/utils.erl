@@ -1,14 +1,10 @@
 -module(utils).
 
--export([read_token/0, read_token/1]).
+-export([read_credentials/0]).
 
--spec read_token() -> string().
-read_token() ->
+read_credentials() ->
   {ok, Directory} = file:get_cwd(),
-  read_token(Directory).
-
--spec read_token(Directory :: string()) -> string().
-read_token(Directory) ->
-  {ok, Data} = file:read_file(Directory ++ "/token.tok"),
-  binary_to_list(Data).
-
+  {ok, Token} = file:read_file(Directory ++ "/token.tok"),
+  {ok, ApiId} = file:read_file(Directory ++ "/api_id.tok"),
+  {ok, ApiHash} = file:read_file(Directory ++ "/api_hash.tok"),
+  { Token, ApiId, ApiHash }.

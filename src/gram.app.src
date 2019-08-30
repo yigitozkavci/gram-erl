@@ -7,7 +7,8 @@
    [kernel,
     stdlib,
     jiffy,
-    pe4kin
+    pe4kin,
+    tdlib
    ]},
   {env,[]},
   {modules, []},

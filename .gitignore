@@ -16,5 +16,6 @@ _build
 .idea
 *.iml
 rebar3.crashdump
-token.tok
+*.tok
+tdlib_db/
 *~

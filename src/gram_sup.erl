@@ -17,7 +17,7 @@ init(_Args) ->
                     modules => [spam_detector]},
 
     Bot = <<"GramBot">>,
-    Token = list_to_binary(utils:read_token()),
+    { Token, ApiId, ApiHash } = utils:read_credentials(),
     pe4kin:launch_bot(Bot, Token, #{receiver => false}),
     Pe4kin =       #{id => pe4kin_receiver,
                     start => {pe4kin_receiver, start_link, [Bot, Token, #{receiver => true}]},
@@ -25,5 +25,12 @@ init(_Args) ->
                     shutdown => brutal_kill,
                     type => worker,
                     modules => [pe4kin_receiver]},
-    {ok, {SupFlags, [Pe4kin, SpamDetector]}}.
+    tdlib:set_log_verbosity_level(1),
+    Tdlib =       #{id => tdlib,
+                    start => {tdlib, start_link, [{local, session1}, [{api_id, ApiId}, {api_hash, ApiHash}, {database_directory, <<"tdlib_db">>}]]},
+                    restart => permanent,
+                    shutdown => brutal_kill,
+                    type => worker,
+                    modules => [tdlib]},
+    {ok, {SupFlags, [Tdlib, Pe4kin, SpamDetector]}}.
 
